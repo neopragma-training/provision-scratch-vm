@@ -1,22 +1,40 @@
 #!/bin/bash
 #======================================================================================
-# Configure an instance of Ubuntu Linux to support Java development training courses.
+# Configure an instance of Ubuntu Linux to support Scratch.
 #
 # Arguments:
 # (None)		
 #
-# Version: 1.1.0
-# Date: 03-May-2014
+# Version: 1.0.0
+# Date: 05-June-2014
 # Author: Dave Nicolette
 #======================================================================================
-export INSTALL_DIR="$HOME/provision-java-dev-training-vm"
+
+echo
+echo '============================================================='
+echo 'Checking for compatible machine architecture...'
+
+MACHINE_TYPE=`uname -m`
+if [ ${MACHINE_TYPE} == 'x86_64' ]; then
+    echo 
+    echo 'Scratch 2.0 does not run on 64-bit Linux.'
+    echo 'Please provision an instance of 32-bit Linux instead.'
+    echo
+    exit 1
+fi
+
+export INSTALL_DIR="$HOME/provision-scratch-vm"
 export COMMON_DIR="provision-ubuntu-common"
 
 git clone "git://github.com/neopragma/$COMMON_DIR"
 
+echo
+echo '============================================================='
+echo 'Installing build support, text editor, assorted utilities...'
+
 "./$COMMON_DIR/install_build_support"
 "./$COMMON_DIR/install_sublime_text_3"
-sudo apt-get -y -f install aptitude curl
+# sudo apt-get -y -f install aptitude curl
 
 echo
 echo '============================================================='
@@ -26,44 +44,35 @@ sudo apt-get install -y -f ttf-mscorefonts-installer
 
 echo
 echo '============================================================='
-echo 'Installing Java Development Kit...'
+echo 'Installing Adobe Air...'
 
-sudo apt-get install -y -f openjdk-7-jdk
-
-echo
-echo '============================================================='
-echo 'Installing Maven...'
-
-sudo apt-get install -y -f maven
-
-# =============================================================
-# Installing Eclipse...
-
-"./$COMMON_DIR/install_eclipse_kepler"
+wget -O AdobeAIRInstaller.bin http://airdownload.adobe.com/air/lin/download/2.6/AdobeAIRInstaller.bin
+chmod +x AdobeAIRInstaller.bin
+sudo LD_LIBRARY_PATH=/usr/lib/i386-linux-gnu ./AdobeAIRInstaller.bin
 
 echo
 echo '============================================================='
-echo 'Installing RVM, Ruby, and Bundler...'
+echo 'Installing Scratch 2.0 offline editor...'
 
-pushd "$HOME"
-\curl -sSL https://get.rvm.io | bash -s stable --ruby=2.1
-echo 'source "$HOME/.rvm/scripts/rvm"' >> .bashrc
-. .bashrc
-rvm --default use 2.1.1
-gem install bundler
-popd
+wget -O Scratch.air http://cdn.scratch.mit.edu/scratchr2/static/__1c3ad87e20b5447896fef985dd68ea7f__/sa/Scratch.air
+
+sudo "/usr/bin/Adobe AIR Application Installer" "$PWD/Scratch.air"
+
+echo
+echo '============================================================='
+echo 'Installing Scratch documentation and samples...'
+
+wget -O Scratch2StarterProjects.zip http://cdn.scratch.mit.edu/scratchr2/static/__1c3ad87e20b5447896fef985dd68ea7f__/sa/Scratch2StarterProjects.zip
+wget -O Getting-Started-Guide-Scratch2.pdf http://cdn.scratch.mit.edu/scratchr2/static/__1c3ad87e20b5447896fef985dd68ea7f__/pdfs/help/Getting-Started-Guide-Scratch2.pdf
+wget -O Scratch2Cards_Jan2013.pdf http://cdn.scratch.mit.edu/scratchr2/static/__1c3ad87e20b5447896fef985dd68ea7f__/pdfs/help/Scratch2Cards_Jan2013.pdf
 
 echo
 echo '============================================================='
 echo 'Setting the desktop background image...'
 
-
-# Install ArgoUML
-./install_argouml
-
 mkdir -p "$HOME/.backgrounds"
-cp -f java-background.png "$HOME/.backgrounds/."
-gsettings set org.gnome.desktop.background picture-uri file:///home/student/.backgrounds/java-background.png
+cp -f scratch-background.jpg "$HOME/.backgrounds/."
+gsettings set org.gnome.desktop.background picture-uri file:///home/student/.backgrounds/scratch-background.jpg
 
 ./verify
 

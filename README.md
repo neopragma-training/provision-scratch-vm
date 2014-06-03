@@ -1,16 +1,16 @@
-# provision-java-dev-training-vm
+# provision-scratch-vm
 
-Provision an instance of Ubuntu Linux with software to support programming exercises for a training course in Test-Driven Development and Object-Oriented Design in Java. Once you have a provisioned VM, you can clone git repositories for one or more sample projects designed for use in training classes. These instructions are used by an instructor preparing a VM to be copied and distributed to participants in a training class.
+Provision an instance of Ubuntu Linux to support Scratch for a training course or workshop for non-technical people to learn a little about programming and about lightweight software development methods. Once you have a provisioned VM, you can clone git repositories for one or more sample projects designed for use in training classes. These instructions are used by an instructor preparing a VM to be copied and distributed to participants in a training class.
 
 ## Steps
 
 The instructions assume you will provision a virtual machine with Ubuntu Linux. This has been tested with the following operating systems:
 
-* Ubuntu 14.04 LTS 64-bit
+* Ubuntu Desktop 14.04 LTS 32-bit
 
 ### Step 1 - Download Ubuntu iso
 
-Open a browser and navigate to http://www.ubuntu.com. Download the iso for the version of Ubuntu desktop you want to install.
+Open a browser and navigate to http://www.ubuntu.com. Download the iso for a 32-bit version of Ubuntu Desktop. As this is written, the Scratch 2.0 offline editor does not work with 64-bit Linux.
 
 ### Step 2 - Create VM
 
@@ -35,7 +35,7 @@ sudo apt-get -y -f dist-upgrade
  Install git.
 
 ```shell
-sudo apt-get install git
+sudo apt-get -y -f install git
 ```
 
 ### Step 5 - Clone this repo
@@ -44,7 +44,7 @@ With git installed, you can load this provisioning project on the new instance:
 
 ```shell
 cd
-git clone https://github.com/neopragma/provision-java-dev-training-vm
+git clone https://github.com/neopragma/provision-scratch-vm
 ```
 
 ### Step 6 - Run the setup script
@@ -52,7 +52,7 @@ git clone https://github.com/neopragma/provision-java-dev-training-vm
 Run the setup script.
 
 ```shell
-cd ~/provision-java-dev-training-vm
+cd ~/provision-scratch-vm
 ./setup
 ```
 
@@ -62,7 +62,7 @@ The last thing the setup script does is to run a script named verify. Check the 
 
 ### Step 8 - Install course-specific project(s)
 
-At this point, the VM is ready to support Java training course projects available from Neo Pragma LLC Github repositories.
+At this point, the VM is ready to support Scratch workshops available from Neo Pragma LLC Github repositories, or any other Scratch activities you care to facilitate.
 
 
 
